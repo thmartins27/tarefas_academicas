@@ -9,13 +9,6 @@ create table professor(
     constraint pk_professor primary key(id)
 );
 
-create table alunos(
-	id int auto_increment,
-    matricula varchar(10) not null unique,
-    nome varchar(60),
-    sobrenome varchar(60),
-    constraint pk_aluno primary key(id));
-
 create table turma(
 	id int auto_increment,
     id_turma varchar(5) not null unique,
@@ -25,9 +18,20 @@ create table turma(
     constraint pk_id primary key(id)
 );
 
+create table alunos(
+	id int auto_increment,
+    matricula varchar(10) not null unique,
+    nome varchar(60),
+    sobrenome varchar(60),
+    turma varchar(5),
+    constraint pk_aluno primary key(id)),
+    constraint fk_aluno_turma foreign key(turma)
+    references turma(id_turma);
+
+
 create table disciplina(
 	id int auto_increment,
-    id_materia varchar(6) not null unique,
+    id_disciplina varchar(6) not null unique,
     nome varchar(60) not null,
     area varchar(60),
     constraint pk_disciplina primary key(id)
