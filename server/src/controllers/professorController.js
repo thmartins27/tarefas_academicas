@@ -2,13 +2,9 @@ const professorService = require('../service/professorService')
 
 module.exports = {
     buscarTodos: async (req, res) => {
-        
+        let json = {erro: '', results: []}
         try{
-
-            let json = {erro: '', results: []}
-            
             let professor = await professorService.buscarTodos()
-            
             for(i in professor){
                 json.results.push({
                     codigo: professor[i].cod_professor,
@@ -16,67 +12,68 @@ module.exports = {
                     sobrenome: professor[i].sobrenome
                 })
             }
-            res.json(json)
-
-        }catch(erro){
-            console.log(`Houve um erro: ${erro}`)
+        }catch(e){
+            json.erro = `Erro de query: ${e}`
+            console.log(json.erro)
         }
+        res.json(json)
     },
 
     buscarUm: async (req, res) => {
-
         let json = {erro: '', results: {}}
-
         let codigo = req.params.codigo
-
-        let professor = await professorService.buscarUm(codigo)
-
-        if(professor){
-            json.results = professor
+        try{
+            let professor = await professorService.buscarUm(codigo)
+            if(professor){
+                json.results = professor
+            }
+        }catch(e){
+            json.erro = `Erro de query: ${e}`
+            console.log(json.erro)
         }
-
         res.json(json)
     },
 
     addProfessor: async(req, res) => {
-
         let json = {erro: '', results: {}}
-
         let codigo = req.body.codigo
         let nome = req.body.nome
         let sobrenome = req.body.sobrenome
-
-        if(codigo && nome && sobrenome){
-            let professor = await professorService.addProfessor(codigo, nome, sobrenome)
-
-            json.results = {
-                id: professor,
-                codigo,
-                nome,
-                sobrenome
+        try{
+            if(codigo && nome && sobrenome){
+                let professor = await professorService.addProfessor(codigo, nome, sobrenome)
+    
+                json.results = {
+                    id: professor,
+                    codigo,
+                    nome,
+                    sobrenome
+                }
+            }else{
+                json.erro = 'Campos não enviados'
             }
-        }else{
-            json.erro = 'Campos não enviados'
+        }catch(e){
+            json.erro = `Erro de query: ${e}`
+            console.log(json.erro)
         }
-
         res.json(json)
-
     },
 
     alterProfessor: async(req, res) => {
-        
         let json = {erro: '', results: {}}
-
         let codigo = req.params.codigo
         let nome = req.body.nome
         let sobrenome = req.body.sobrenome
-
-        let professor = await professorService.alterProfessor(codigo, nome, sobrenome)
-
-        if(professor){
-            json.results = professor
-        }else{
-            json.erro = 'Campos não enviados'
+        try{
+            let professor = await professorService.alterProfessor(codigo, nome, sobrenome)
+            if(professor){
+                json.results = professor
+            }else{
+                json.erro = 'Campos não enviados'
+            }
+        }catch(e){
+            json.erro = `Erro de query: ${e}`
+            console.log(json.erro)
         }
 
         res.json(json)
@@ -85,17 +82,18 @@ module.exports = {
 
     delete: async(req, res) => {
         let json = {erro: '', results: {}}
-
         let codigo = req.params.codigo
-
-        let professor = await professorService.delete(codigo)
-
-        if(professor){
-            json.results = professor
-        }else{
-            json.erro = 'Campos não enviados'
+        try{
+            let professor = await professorService.delete(codigo)
+            if(professor){
+                json.results = professor
+            }else{
+                json.erro = 'Campos não enviados'
+            }
+        }catch(e){
+            json.erro = `Erro de query: ${e}`
+            console.log(json.erro)
         }
-
         res.json(json)
     }
 }
