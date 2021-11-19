@@ -52,8 +52,23 @@ create table grade(
 #criação de tabelas
 
 
+insert into disciplina(id_disciplina, nome, area) values('POOII1', 'Programação orientada a objeto', 'programação');
+insert into disciplina(id_disciplina, nome, area) values('ANOO01', 'Analise orientada a objeto', 'Analise de sistemas');
+insert into disciplina(id_disciplina, nome, area) values('BD0001', 'Banco de Dados', 'programação');
+insert into disciplina(id_disciplina, nome, area) values('ENGSII', 'Engenharia de software II', 'Engenharia');
+insert into disciplina(id_disciplina, nome, area) values('RDC001', 'Rede de computadores', 'Redes');
+insert into disciplina(id_disciplina, nome, area) values('SO0001', 'Sistemas operacionais', 'Informatica');
+insert into disciplina(id_disciplina, nome, area) values('MATC01', 'Matematica para computadores', 'Exatas');
+insert into disciplina(id_disciplina, nome, area) values('TOPEOO', 'Topicos especiais de orientação a objeto', 'programação');
+
+insert into grade(turma, disciplina, professor, dia_aula) values('ADS01', 'ANOO01', 'AAA001', 'Segunda-Feira');
+insert into grade(turma, disciplina, professor, dia_aula) values('ADS01', 'RDC001', 'AAA001', 'Terça-Feira');
+insert into grade(turma, disciplina, professor, dia_aula) values('ADS01', 'TOPEOO', 'AAA001', 'Quarta-Feira');
+insert into grade(turma, disciplina, professor, dia_aula) values('ADS01', 'MATC01', 'AAA001', 'Quinta-Feira');
 
 
+describe disciplina;
+describe grade;
 
 
 #criação de tabelas
@@ -98,5 +113,6 @@ select * from turma;
 ALTER TABLE turma CHANGE perido periodo varchar(1);
 
 describe disciplina;
+describe grade;
 
 
