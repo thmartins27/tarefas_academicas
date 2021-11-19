@@ -5,6 +5,7 @@ const professorController = require('./src/controllers/professorController')
 const alunoController = require('./src/controllers/alunoController')
 const turmaController = require('./src/controllers/turmaController')
 const disciplinaController = require('./src/controllers/disiciplinaController')
+const provaController = require('./src/controllers/provaController')
 
 //CRUD Professor
 router.get('/professores', professorController.buscarTodos)
@@ -34,5 +35,8 @@ router.get('/disciplina/:id', disciplinaController.buscarUm)
 router.post('/disciplina', disciplinaController.addDisciplina)
 router.put('/disciplina/:id', disciplinaController.alterDisciplina)
 router.delete('/disciplina/:id', disciplinaController.delete)
+
+//Provas
+router.get('/prova/:idTurma', provaController.buscarUm)
 
 module.exports = router

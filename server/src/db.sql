@@ -1,4 +1,4 @@
-#use dbtarefasacademicas;
+use dbtarefasacademicas;
 
 /*
 create table professor(
@@ -51,17 +51,45 @@ create table grade(
     references professor(cod_professor)
 );
 
+create table provas(
+    id int AUTO_INCREMENT,
+    fk_disciplina varchar(6),
+    data_prova datetime,
+    fk_turma varchar(5),
+    CONSTRAINT pk_provas PRIMARY KEY(id),
+    CONSTRAINT fk_provas_disciplina FOREIGN KEY(fk_disciplina) REFERENCES disciplina(id_disciplina),
+    CONSTRAINT fk_provas_turma FOREIGN KEY(fk_turma) REFERENCES turma(id_turma)
+);
 */
 
-#criação de tabelas
+--criação de tabelas
+
+drop table provas;
+
+describe provas;
+
+insert into provas(fk_disciplina, data_prova, fk_turma) values('POO201', '2021-11-21', 'ADS01');
+
+select * from provas;
+delete from provas where id = 1;
+
+select disciplina.nome as disciplina, provas.data_prova as data, turma.id_turma as turma
+from provas
+inner join disciplina on provas.fk_disciplina = disciplina.id_disciplina
+inner join turma on provas.fk_turma = turma.id_turma;
+
+insert into turma(id_turma, sala, curso, periodo) VALUES('ADS01', 201, 'Analise', 'N');
 
 
 
+--criação de tabelas
 
+describe turma;
+describe disciplina;
 
-
-#criação de tabelas
-
+select * from disciplina;
+select * from turma;
+alter table turma change perido periodo VARCHAR(1);
 
 #ALTER TABLE tabela_exemplo CHANGE id_exemplo novo_id_exemplo integer(5) unsigned;
 alter table disciplina change id_materia id_disciplina varchar(6) not null unique;
