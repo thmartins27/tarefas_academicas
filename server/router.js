@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+//controllers
 const professorController = require('./src/controllers/professorController')
 const alunoController = require('./src/controllers/alunoController')
 const turmaController = require('./src/controllers/turmaController')
@@ -23,13 +24,13 @@ router.put('/turma/:id', turmaController.alterTurma)
 router.delete('/turma/:id', turmaController.delete)
 //grade-turma
 router.get('/grade/:idTurma', gradeController.buscarUm)
+router.put('/grade/:idTurma/:dia', gradeController.alterDisciplina)
 
 //CRUD Aluno
 router.get('/alunos', alunoController.buscarTodos)
 router.get('/aluno/:matricula', alunoController.buscarUm)
 router.post('/aluno', alunoController.addAluno)
-router.put('/aluno/:matricula', alunoController.alterAluno)
-router.delete('/aluno/:matricula', alunoController.delete)
+router.put('/aluno/:matricula', alunoController.delete)
 
 //CRUD disciplina
 router.get('/disciplinas', disciplinaController.buscarTodos)
