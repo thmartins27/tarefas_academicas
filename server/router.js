@@ -42,6 +42,7 @@ router.put('/disciplina/:id', disciplinaController.alterDisciplina)
 router.delete('/disciplina/:id', disciplinaController.delete)
 
 //Provas
-router.get('/prova/:idTurma', provaController.buscarUm)
+router.get('/provas/:idTurma', provaController.buscarPorTurma)
+router.get('/prova/:codigo', provaController.buscarPorProva)
 
 module.exports = router

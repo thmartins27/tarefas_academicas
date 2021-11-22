@@ -57,8 +57,25 @@ create table provas(
     CONSTRAINT fk_provas_turma FOREIGN KEY(fk_turma) REFERENCES turma(id_turma)
 );
 
+
+
 */
+
+drop table provas;
+
+create table provas(
+    id int auto_increment,
+    cod_prova varchar(5) not null unique,
+    fk_disciplina varchar(6) not null,
+    fk_turma varchar(5) not null,
+    data datetime,
+    constraint pk_provas primary key(id, cod_prova),
+    constraint fk_provas_turma foreign key(fk_turma) references turma(id_turma),
+    constraint fk_provas_disciplina foreign key(fk_disciplina) references disciplina(id_disciplina));
 use dbtarefasacademicas;
+
+insert into provas(cod_prova, fk_disciplina, fk_turma, data)
+VALUES('PODS1', 'POO201', 'ADS01', '2021-12-21');
 
 select * from disciplina;
 select * from grade;
