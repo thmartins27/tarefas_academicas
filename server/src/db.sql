@@ -47,7 +47,21 @@ create table grade(
     references professor(cod_professor)
 );
 
+create table provas(
+    id int AUTO_INCREMENT,
+    fk_disciplina varchar(6),
+    data_prova datetime,
+    fk_turma varchar(5),
+    CONSTRAINT pk_provas PRIMARY KEY(id),
+    CONSTRAINT fk_provas_disciplina FOREIGN KEY(fk_disciplina) REFERENCES disciplina(id_disciplina),
+    CONSTRAINT fk_provas_turma FOREIGN KEY(fk_turma) REFERENCES turma(id_turma)
+);
+
 */
+use dbtarefasacademicas;
+
+select * from disciplina;
+select * from grade;
 
 #criação de tabelas
 
@@ -116,3 +130,10 @@ describe disciplina;
 describe grade;
 
 
+describe professor;
+insert into professor(cod_professor, nome, sobrenome) values('AAA02', 'Rodeny', 'Victor');
+insert into professor(cod_professor, nome, sobrenome) values('AAA03', 'Alan', 'Carlos');
+insert into professor(cod_professor, nome, sobrenome) values('AAA04', 'Eduardo', 'Afonso');
+insert into professor(cod_professor, nome, sobrenome) values('AAA05', 'Marcio', 'Silva');
+
+select id_disciplina from disciplina;

@@ -24,7 +24,9 @@ router.put('/turma/:id', turmaController.alterTurma)
 router.delete('/turma/:id', turmaController.delete)
 //grade-turma
 router.get('/grade/:idTurma', gradeController.buscarUm)
+router.post('/grade', gradeController.addGrade)
 router.put('/grade/:idTurma/:dia', gradeController.alterDisciplina)
+router.delete('/grade/:idTurma/:dia?', gradeController.delete)
 
 //CRUD Aluno
 router.get('/alunos', alunoController.buscarTodos)
