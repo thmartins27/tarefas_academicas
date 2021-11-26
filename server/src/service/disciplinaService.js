@@ -8,32 +8,32 @@ module.exports = {
         })
     }),
 
-    buscarUm: id => new Promise((resolve, reject) => {
-        db.query('select * from disciplina where id_disciplina = ?', [id], (erro, results) => {
+    buscarUm: cod => new Promise((resolve, reject) => {
+        db.query('select * from disciplina where cod_disciplina = ?', [cod], (erro, results) => {
             if(erro) reject(erro)
             resolve(results)
         })
     }),
 
-    addDisciplina: (id, nome, area) => new Promise((resolve, reject) => {
-        db.query(`insert into disciplina(id_disciplina, nome, area)
-        values(?, ?, ?);`, [id, nome, area], (erro, results) => {
+    addDisciplina: (cod, descricao, area) => new Promise((resolve, reject) => {
+        db.query(`insert into disciplina(cod_disciplina, descricao, area)
+        values(?, ?, ?);`, [cod, descricao, area], (erro, results) => {
             if(erro) reject(erro)
             resolve(results)
         })
     }),
 
-    alterDisciplina: (id, nome, area) => new Promise((resolve, reject) => {
+    alterDisciplina: (cod, descricao, area) => new Promise((resolve, reject) => {
         db.query(`update disciplina
-        set nome = ?, area = ?
-        where id_disciplina = ?;`, [nome, area, id], (erro, results) => {
+        set descricao = ?, area = ?
+        where cod_disciplina = ?;`, [descricao, area, cod], (erro, results) => {
             if(erro) reject(erro)
             resolve(results)
         })
     }),
 
-    delete: id => new Promise((resolve, reject) => {
-        db.query('delete from disciplina where id_disciplina = ?;', [id], (erro, results) => {
+    delete: cod => new Promise((resolve, reject) => {
+        db.query('delete from disciplina where cod_disciplina = ?;', [cod], (erro, results) => {
             if(erro) reject(erro)
             resolve(results)
         })

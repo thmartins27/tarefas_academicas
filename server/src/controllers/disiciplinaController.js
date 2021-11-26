@@ -7,8 +7,8 @@ module.exports = {
             let disciplinas = await disciplinaService.buscarTodos()
             for(i in disciplinas){
                 json.results.push({
-                    id_disciplina: disciplinas[i].id_disciplina,
-                    nome: disciplinas[i].nome,
+                    id_disciplina: disciplinas[i].cod_disciplina,
+                    nome: disciplinas[i].descricao,
                     area: disciplinas[i].area
                 })
             }
@@ -21,9 +21,9 @@ module.exports = {
 
     buscarUm: async(req, res) => {
         let json = {erro: '', results: {}}
-        let id = req.params.id
+        let cod = req.params.cod
         try{
-            let disciplina = await disciplinaService.buscarUm(id)
+            let disciplina = await disciplinaService.buscarUm(cod)
             if(disciplina){
                 json.results = disciplina
             }
@@ -36,54 +36,56 @@ module.exports = {
     },
     
     addDisciplina: async(req, res) => {
-        let json = {erro: '', results: {}}
-        let id_disciplina = req.body.id_disciplina
-        let nome = req.body.nome
+        let json = {erro: '', results: ''}
+        let cod = req.body.cod
+        let descricao = req.body.descricao
         let area = req.body.area
-        try{
-            if(id_disciplina && nome && area){
-                let disciplina = await disciplinaService.addDisciplina(id_disciplina, nome, area)
-                if(disciplina){
-                    json.results = disciplina
-                }
-            }else{
-                json.erro = 'Campos não enviados'
-            }
 
-        }catch(e){
-            json.erro = `Erro de query: ${e}`
-            console.log(json.erro)
+        if(cod && descricao && area){
+            try{
+                let disciplina = await disciplinaService.addDisciplina(cod, descricao, area)
+                if(disciplina){
+                    json.results = 'disciplina cadastrada com sucesso'
+                }
+            }catch(e){
+                json.erro = `Erro de query ${e}`
+                console.log(json.erro)
+            }
+        }else{
+            json.erro = 'Há campos em branco'
         }
 
         res.json(json)
     },
 
     alterDisciplina: async(req, res) => {
-        let json = {erro: '', results: {}}
-        let id = req.params.id
-        let nome = req.body.nome
+        let json = {erro: '', results: ''}
+        let cod = req.params.cod
+        let descricao = req.body.descricao
         let area = req.body.area
-        try{
-            if(nome && area){
-                let disciplina = await disciplinaService.alterDisciplina(id, nome, area)
+        
+        if(descricao && area){
+            try{
+                let disciplina = await disciplinaService.alterDisciplina(cod, descricao, area)
                 if(disciplina){
-                    json.results = disciplina
+                    json.results = 'Dados alterados'
                 }
-            }else{
-                json.erro = 'Campos não enviados'
+            }catch(e){
+                json.erro = `Erro de query: ${e}`
+                console.log(json.erro)
             }
-        }catch(e){
-            json.erro = `Erro na query: ${e}`
-            console.log(json.erro)
+        }else{
+            json.erro = 'Há campos em branco'
         }
+
         res.json(json)
     },
 
     delete: async(req, res) => {
         let json = {erro: '', results: {}}
-        let id = req.params.id
+        let cod = req.params.cod
         try{
-            let disciplina = await disciplinaService.delete(id)
+            let disciplina = await disciplinaService.delete(cod)
             if(disciplina){
                 json.results = disciplina
             }
