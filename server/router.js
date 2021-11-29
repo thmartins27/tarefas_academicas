@@ -32,14 +32,15 @@ router.delete('/grade/:idTurma/:dia?', gradeController.delete)
 router.get('/alunos', alunoController.buscarTodos)
 router.get('/aluno/:matricula', alunoController.buscarUm)
 router.post('/aluno', alunoController.addAluno)
-router.put('/aluno/:matricula', alunoController.delete)
+router.put('/aluno/:matricula', alunoController.alterAluno)
+router.delete('/aluno/:matricula', alunoController.delete)
 
 //CRUD disciplina
 router.get('/disciplinas', disciplinaController.buscarTodos)
-router.get('/disciplina/:id', disciplinaController.buscarUm)
+router.get('/disciplina/:cod', disciplinaController.buscarUm)
 router.post('/disciplina', disciplinaController.addDisciplina)
-router.put('/disciplina/:id', disciplinaController.alterDisciplina)
-router.delete('/disciplina/:id', disciplinaController.delete)
+router.put('/disciplina/:cod', disciplinaController.alterDisciplina)
+router.delete('/disciplina/:cod', disciplinaController.delete)
 
 //Provas
 router.get('/provas/:idTurma', provaController.buscarPorTurma)

@@ -19,6 +19,8 @@ module.exports = {
             console.log(json.erro)
         }
         res.json(json)
+
+        return json.results
     },
 
     buscarPorProva: async(req, res) => {

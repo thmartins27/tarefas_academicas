@@ -7,7 +7,7 @@ module.exports = {
             let disciplinas = await disciplinaService.buscarTodos()
             for(i in disciplinas){
                 json.results.push({
-                    id_disciplina: disciplinas[i].cod_disciplina,
+                    codigo: disciplinas[i].cod_disciplina,
                     nome: disciplinas[i].descricao,
                     area: disciplinas[i].area
                 })
@@ -24,8 +24,14 @@ module.exports = {
         let cod = req.params.cod
         try{
             let disciplina = await disciplinaService.buscarUm(cod)
-            if(disciplina){
-                json.results = disciplina
+            if(disciplina[0]){
+                json.results = {
+                    codigo: disciplina[0].cod_disciplina,
+                    descricao: disciplina[0].descricao,
+                    area: disciplina[0].area
+                }
+            }else{
+                json.erro = `Nem uma disciplina cadastrada com o codigo: ${cod}`
             }
         }catch(e){
             json.erro = `Erro de query: ${e}`
@@ -37,15 +43,15 @@ module.exports = {
     
     addDisciplina: async(req, res) => {
         let json = {erro: '', results: ''}
-        let cod = req.body.cod
+        let codigo = req.body.codigo
         let descricao = req.body.descricao
         let area = req.body.area
 
-        if(cod && descricao && area){
+        if(codigo && descricao && area){
             try{
-                let disciplina = await disciplinaService.addDisciplina(cod, descricao, area)
-                if(disciplina){
-                    json.results = 'disciplina cadastrada com sucesso'
+                let disciplina = await disciplinaService.addDisciplina(codigo, descricao, area)
+                if(disciplina.cod_disciplina){
+                    json.results = `${descricao} adicionado com sucesso`
                 }
             }catch(e){
                 json.erro = `Erro de query ${e}`

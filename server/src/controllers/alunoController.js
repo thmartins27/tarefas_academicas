@@ -34,7 +34,7 @@ module.exports = {
                     CPF: aluno[0].cpf
                 }
             }else{
-                json.results = 'Nem dado encontrado'
+                json.erro = 'Nem dado encontrado'
             }
         }catch{
             json.erro = `Erro de query ${e}`
