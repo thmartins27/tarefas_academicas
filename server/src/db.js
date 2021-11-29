@@ -2,9 +2,9 @@ const mysql = require('mysql')
 
 const bd = {
     host: 'localhost',
-    user: 'root',
-    passwd: 'password',
-    bd: 'dbtarefasacademicas'
+    user: 'saTarefas',
+    passwd: '_8280',
+    bd: 'db_tarefas_academicas'
 }
 
 const connection = mysql.createConnection({
