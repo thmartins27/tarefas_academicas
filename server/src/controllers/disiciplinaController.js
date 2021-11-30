@@ -5,12 +5,16 @@ module.exports = {
         let json = {erro: '', results: []}
         try{
             let disciplinas = await disciplinaService.buscarTodos()
-            for(i in disciplinas){
-                json.results.push({
-                    codigo: disciplinas[i].cod_disciplina,
-                    nome: disciplinas[i].descricao,
-                    area: disciplinas[i].area
-                })
+            if(disciplinas[0]){
+                for(i in disciplinas){
+                    json.results.push({
+                        codigo: disciplinas[i].cod_disciplina,
+                        nome: disciplinas[i].descricao,
+                        area: disciplinas[i].area
+                    })
+                }
+            }else{
+                json.erro = 'Nem dado encontrado'
             }
         }catch(e){
             json.erro = `Erro de query ${e}`
@@ -31,7 +35,7 @@ module.exports = {
                     area: disciplina[0].area
                 }
             }else{
-                json.erro = `Nem uma disciplina cadastrada com o codigo: ${cod}`
+                json.erro = `Nenhuma disciplina cadastrada com o codigo: ${cod}`
             }
         }catch(e){
             json.erro = `Erro de query: ${e}`
@@ -50,8 +54,8 @@ module.exports = {
         if(codigo && descricao && area){
             try{
                 let disciplina = await disciplinaService.addDisciplina(codigo, descricao, area)
-                if(disciplina.cod_disciplina){
-                    json.results = `${descricao} adicionado com sucesso`
+                if(disciplina.affectedRows == 1){
+                    json.results = `Disciplina ${descricao} adicionada com sucesso`
                 }
             }catch(e){
                 json.erro = `Erro de query ${e}`
@@ -73,7 +77,7 @@ module.exports = {
         if(descricao && area){
             try{
                 let disciplina = await disciplinaService.alterDisciplina(cod, descricao, area)
-                if(disciplina){
+                if(disciplina.affectedRows == 1){
                     json.results = 'Dados alterados'
                 }
             }catch(e){
@@ -92,8 +96,8 @@ module.exports = {
         let cod = req.params.cod
         try{
             let disciplina = await disciplinaService.delete(cod)
-            if(disciplina){
-                json.results = disciplina
+            if(disciplina.affectedRows == 1){
+                json.results = `Disciplina ${cod} deletada`
             }
         }catch(e){
             json.erro = `Erro na query: ${e}`
