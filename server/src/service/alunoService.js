@@ -23,7 +23,8 @@ module.exports = {
     }),
 
     alterAluno: (matricula, nome, sobrenome, turma, cpf) => new Promise((resove, reject) => {
-        db.query('update aluno set nome = ?, sobrenome = ?, cpf = ?, fk_turma = ? where matricula = ?', [nome, sobrenome, turma,  matricula, cpf], (erro, results) => {
+        db.query(`update aluno 
+        set nome = ?, sobrenome = ?, cpf = ?, fk_turma = ? where matricula = ?`, [nome, sobrenome, cpf,  turma, matricula], (erro, results) => {
             if(erro) reject(erro)
             resove(results)
         })
