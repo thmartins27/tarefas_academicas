@@ -1,6 +1,13 @@
 const db = require('../db')
 
 module.exports = {
+    buscarTodos: () => new Promise((resolve, reject) => {
+        db.query(`select * from grade`, (erro, results) => {
+            if(erro) reject(erro)
+            resolve(results)
+        })
+    })
+    ,
     buscarUm: idTurma => new Promise((resolve, reject) => {
         db.query(`select dia_semana.dia as dia, turma.id_turma as turma, professor.nome as nome_professor, professor.sobrenome as sobrenome_professor, disciplina.descricao as disciplina
         from grade
@@ -22,9 +29,9 @@ module.exports = {
         })
     }),
 
-    alterDisciplina: (idTurma, dia, disciplina, professor) => new Promise((resolve, reject) => {
-        db.query(`update grade set disciplina = ?, professor = ?
-        where turma = ? and dia_disciplina = ?;`, [disciplina, professor, idTurma, dia], (erro, result) => {
+    alterDisciplina: (paramTurma, paramDia, dia, professor, disciplina) => new Promise((resolve, reject) => {
+        db.query(`update grade set fk_professor = ?, fk_discplina = ?, fk_dia = ?
+        where fk_turma = ? and fk_dia = ?;`, [professor, disciplina, dia, paramTurma, paramDia], (erro, result) => {
             if(erro) reject(erro)
             resolve(result)
         })

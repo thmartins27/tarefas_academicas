@@ -31,13 +31,27 @@ module.exports = {
         let turma = req.body.turma
         let professor = req.body.professor
         let disciplina = req.body.disciplina
+
         try{
-            if(!dia && !turma && !professor && !disciplina)
-                throw 'campos não preenchidos'
-            let grade = await gradeService.addGrade(dia, turma, professor, disciplina)
-            if(grade[0].affectedRows == 0)
-                throw 'Erro ao enviar dados ao banco'
-            json.result = 'Dados salvos com sucesso'
+            let grades = await gradeService.buscarTodos()
+            for(i in grades){
+                if(grades[i].fk_dia == dia && grades[i].fk_turma == turma){
+                    throw 'Já existe uma disciplina para está turma, no dia especifico'
+                }
+            }
+            
+            try{
+                if(dia == '' || turma == '' || professor == '' || disciplina == ''){throw 'Campos em branco'
+                }else{
+                    let grade = await gradeService.addGrade(dia, turma, professor, disciplina)
+                    if(grade.affectedRows == 1) json.result = 'Dados cadastrados com sucesso'
+                    else throw 'Erro ao cadastrar dados'
+                }
+            }catch(e){
+                json.erro = e
+                console.log(e)
+            }
+
         }catch(e){
             json.erro = e
             console.log(e)
@@ -47,17 +61,18 @@ module.exports = {
 
     alterDisciplina: async(req, res) => {
         let json = {erro: '', result: {}}
-        let idTurma = req.params.idTurma
-        let dia = req.params.dia
-        let disciplina = req.body.disciplina
+        let paramTurma = req.params.turma
+        let paramdia = req.params.dia
+        let dia = req.body.dia
         let professor = req.body.professor
+        let disciplina = req.body.disciplina
         try{
-            if(disciplina && professor){
-                let grade = gradeService.alterDisciplina(idTurma, dia, disciplina, professor)
-                json.result = grade
-            }else{
-                json.erro = 'Campos não enviados'
-            }
+            if(!dia || !professor || !disciplina)
+                throw 'Campos em branco'
+            let grade = await gradeService.alterDisciplina(paramTurma, paramdia, dia, professor, disciplina)
+            if(grade.affectedRows == 0)
+                throw 'Erro ao alterar dados'
+            json.result = 'Campos alterados com sucesso'
         }catch(e){
             json.erro = `Erro na query: ${e}`
             console.log(json.erro)
