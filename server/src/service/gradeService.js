@@ -2,19 +2,21 @@ const db = require('../db')
 
 module.exports = {
     buscarUm: idTurma => new Promise((resolve, reject) => {
-        db.query(`select grade.turma as turma, disciplina.nome as disciplina, professor.nome as nome, professor.sobrenome as sobrenome, grade.dia_disciplina as dia
+        db.query(`select dia_semana.dia as dia, turma.id_turma as turma, professor.nome as nome_professor, professor.sobrenome as sobrenome_professor, disciplina.descricao as disciplina
         from grade
-        inner join disciplina on grade.disciplina = disciplina.id_disciplina
-        inner join professor on grade.professor = professor.cod_professor
-        where grade.turma = ?;`, [idTurma], (erro, results) => {
+        inner join dia_semana on grade.fk_dia = dia_semana.id
+        inner join turma on grade.fk_turma = turma.id_turma
+        inner join professor on grade.fk_professor = professor.cod_professor
+        inner join disciplina on grade.fk_disciplina = disciplina.cod_disciplina
+        where grade.fk_turma = ?;`, [idTurma], (erro, results) => {
             if(erro) reject(erro)
             resolve(results)
         })
     }),
 
-    addGrade: (turma, disciplina, professor, dia) => new Promise((resolve, reject) => {
-        db.query(`insert into grade(turma, disciplina, professor, dia_disciplina)
-        values(?,?,?,?);`, [turma, disciplina, professor, dia], (erro, result) => {
+    addGrade: (dia, turma, professor, disciplina) => new Promise((resolve, reject) => {
+        db.query(`insert into grade(fk_dia, fk_turma, fk_professor, fk_disciplina)
+        values(?, ?, ?, ?)`, [dia, turma, professor, disciplina], (erro, result) => {
             if(erro) reject(erro)
             resolve(result)
         })

@@ -111,7 +111,7 @@ INSERT INTO disciplina(cod_disciplina, descricao, area) VALUES('SID', 'Seguranç
 INSERT INTO disciplina(cod_disciplina, descricao, area) VALUES('PWEB', 'Programação Web', 'Programação');
 INSERT INTO disciplina(cod_disciplina, descricao, area) VALUES('TOPPOO', 'Topicos de Programação orientada a objeto', 'Programação');
 INSERT INTO disciplina(cod_disciplina, descricao, area) VALUES('SIOP', 'Sistemas Operacionais', 'Sistema da Informação');
-
+INSERT INTO disciplina(cod_disciplina, descricao, area) VALUES('PIM', 'Projeto Integrador Multidiciplinar', 'PIM');
 INSERT INTO turma(id_turma, data_inicio, periodo, fk_curso) VALUES('ADS211', '2021-02-11', 'N', 'ADS');
 INSERT INTO turma(id_turma, data_inicio, periodo, fk_curso) VALUES('SIN212', '2021-08-11', 'N', 'SIN');
 
