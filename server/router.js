@@ -8,6 +8,7 @@ const turmaController = require('./src/controllers/turmaController')
 const disciplinaController = require('./src/controllers/disiciplinaController')
 const gradeController = require('./src/controllers/gradeController')
 const provaController = require('./src/controllers/provaController')
+const eventoController = require('./src/controllers/eventoController')
 
 //CRUD Professor
 router.get('/professores', professorController.buscarTodos)
@@ -22,11 +23,12 @@ router.get('/turma/:id', turmaController.buscarUm)
 router.post('/turma', turmaController.addTurma)
 router.put('/turma/:id', turmaController.alterTurma)
 router.delete('/turma/:id', turmaController.delete)
+
 //grade-turma
 router.get('/grade/:idTurma', gradeController.buscarUm)
 router.post('/grade', gradeController.addGrade)
-router.put('/grade/:turma/:dia', gradeController.alterDisciplina)
-router.delete('/grade/:idTurma/:dia?', gradeController.delete)
+router.put('/grade/:turma/:dia', gradeController.alterGrade)
+router.delete('/grade/:turma/:dia?', gradeController.delete)
 
 //CRUD Aluno
 router.get('/alunos', alunoController.buscarTodos)
@@ -43,7 +45,16 @@ router.put('/disciplina/:cod', disciplinaController.alterDisciplina)
 router.delete('/disciplina/:cod', disciplinaController.delete)
 
 //Provas
-router.get('/provas/:idTurma', provaController.buscarPorTurma)
+router.get('/provas/:turma', provaController.buscarPorTurma)
 router.get('/prova/:codigo', provaController.buscarPorProva)
+router.post('/prova', provaController.addProva)
+router.delete('/prova/:turma', provaController.delete)
+router.put('/prova/:turma', provaController.alterProva)
 
+//eventos
+router.get('/eventos/:turma?', eventoController.buscar)
+
+router.get('/teste', (req, res) => {
+    res.send(req.query.dia + '/' + req.query.mes)
+})
 module.exports = router

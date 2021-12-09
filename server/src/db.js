@@ -11,7 +11,8 @@ const connection = mysql.createConnection({
     host: bd.host,
     user: bd.user,
     password: bd.passwd,
-    database: bd.bd
+    database: bd.bd,
+    dateStrings: true
 })
 
 connection.connect((erro) => {

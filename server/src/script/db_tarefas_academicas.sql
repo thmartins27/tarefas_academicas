@@ -80,11 +80,27 @@ DROP TABLE IF EXISTS prova;
 CREATE TABLE prova(
 	id INT NOT NULL AUTO_INCREMENT,
     data_prova DATE NOT NULL,
-    fk_disciplina VARCHAR(6) NOT NULL,
+    fk_disciplina_turma VARCHAR(6) NOT NULL,
     fk_turma VARCHAR(6) NOT NULL,
-    CONSTRAINT pk_prova PRIMARY KEY(id, data_prova),
-    CONSTRAINT fk_prova_disciplina FOREIGN KEY(fk_disciplina) REFERENCES disciplina(cod_disciplina),
+    CONSTRAINT pk_prova PRIMARY KEY(id),
+    CONSTRAINT fk_prova_disciplina_turma FOREIGN KEY(fk_disciplina_turma) REFERENCES grade(fk_disciplina),
     CONSTRAINT fk_prova_turma FOREIGN KEY(fk_turma) REFERENCES turma(id_turma)
+);
+
+DROP TABLE IF EXISTS evento;
+CREATE TABLE evento(
+    id INT NOT NULL AUTO_INCREMENT,
+    cod_evento VARCHAR(6) NOT NULL UNIQUE,
+    descricao VARCHAR(255) NOT NULL,
+    data_evento DATE NOT NULL,
+    aberto INT NOT NULL,
+    fk_disciplina VARCHAR(6),
+    fk_turma VARCHAR(6),
+    fk_professor VARCHAR(6),
+    CONSTRAINT pk_evento PRIMARY KEY(id),
+    CONSTRAINT fk_evento_disciplina FOREIGN KEY(fk_disciplina) REFERENCES disciplina(cod_disciplina),
+    CONSTRAINT fk_evento_turma FOREIGN KEY(fk_turma) REFERENCES turma(id_turma),
+    CONSTRAINT fk_evento_professor FOREIGN KEY(fk_professor) REFERENCES professor(cod_professor)
 );
 
 INSERT INTO dia_semana(id, dia) VALUES(1, 'Domingo');
@@ -118,7 +134,6 @@ INSERT INTO turma(id_turma, data_inicio, periodo, fk_curso) VALUES('SIN212', '20
 INSERT INTO aluno(matricula, nome, sobrenome, cpf, fk_turma) VALUES('UP20214389', 'Thiago de Oliveira Martins', 'Martins', '04334577245', 'ADS211');
 INSERT INTO aluno(matricula, nome, sobrenome, cpf, fk_turma) VALUES('UP20218943', 'Calinhos da Silva Maia', 'Maia', '89461578502', 'ADS211');
 INSERT INTO aluno(matricula, nome, sobrenome, cpf, fk_turma) VALUES('UP20218502', 'Diana Moreno Cabelo', 'Cabelo', '74563251987', 'SIN212');
-
 INSERT INTO grade(fk_dia, fk_turma, fk_professor, fk_disciplina) VALUES(2, 'ADS211', 'AAA001', 'PWEB');
 INSERT INTO grade(fk_dia, fk_turma, fk_professor, fk_disciplina) VALUES(3, 'ADS211', 'CCC001', 'ENGSI');
 INSERT INTO grade(fk_dia, fk_turma, fk_professor, fk_disciplina) VALUES(4, 'ADS211', 'BBB001', 'POOI');
@@ -128,23 +143,17 @@ INSERT INTO grade(fk_dia, fk_turma, fk_professor, fk_disciplina) VALUES(3, 'SIN2
 INSERT INTO grade(fk_dia, fk_turma, fk_professor, fk_disciplina) VALUES(4, 'SIN212', 'CCC001', 'ENGSI');
 INSERT INTO grade(fk_dia, fk_turma, fk_professor, fk_disciplina) VALUES(5, 'SIN212', 'AAA001', 'SID');
 
-INSERT INTO prova(data_prova, fk_disciplina, fk_turma) VALUES('2021-02-08', 'PWEB', 'ADS211');
-INSERT INTO prova(data_prova, fk_disciplina, fk_turma) VALUES('2021-02-09', 'ENGSI', 'ADS211');
-INSERT INTO prova(data_prova, fk_disciplina, fk_turma) VALUES('2021-02-10', 'POOI', 'ADS211');
-INSERT INTO prova(data_prova, fk_disciplina, fk_turma) VALUES('2021-02-11', 'TOPPOO', 'ADS211');
-INSERT INTO prova(data_prova, fk_disciplina, fk_turma) VALUES('2021-02-11', 'SIOP', 'ADS211');
+INSERT INTO prova(data_prova, fk_disciplina_turma, fk_turma) VALUES('2021-02-08', 'PWEB', 'ADS211');
+INSERT INTO prova(data_prova, fk_disciplina_turma, fk_turma) VALUES('2021-02-09', 'ENGSI', 'ADS211');
+INSERT INTO prova(data_prova, fk_disciplina_turma, fk_turma) VALUES('2021-02-10', 'POOI', 'ADS211');
+INSERT INTO prova(data_prova, fk_disciplina_turma, fk_turma) VALUES('2021-02-11', 'TOPPOO', 'ADS211');
+
+INSERT INTO evento(cod_evento, descricao, data_evento, aberto) VALUES('EVE001', 'Palestra - Analise de Diagramas de Classe', '2021-12-20', 1);
 
 DROP USER IF EXISTS 'saTarefas'@'localhost';
 CREATE USER 'saTarefas'@'localhost' identified BY '_8280';
 
-GRANT SELECT ON db_tarefas_academicas.dia_semana TO 'saTarefas'@'localhost';
-GRANT SELECT ON db_tarefas_academicas.professor TO 'saTarefas'@'localhost';
-GRANT SELECT ON db_tarefas_academicas.curso TO 'saTarefas'@'localhost';
-GRANT SELECT ON db_tarefas_academicas.turma TO 'saTarefas'@'localhost';
-GRANT SELECT ON db_tarefas_academicas.grade TO 'saTarefas'@'localhost';
-GRANT SELECT ON db_tarefas_academicas.aluno TO 'saTarefas'@'localhost';
-GRANT SELECT ON db_tarefas_academicas.prova TO 'saTarefas'@'localhost';
-GRANT SELECT ON db_tarefas_academicas.disciplina TO 'saTarefas'@'localhost';
+GRANT SELECT ON db_tarefas_academicas.* TO 'saTarefas'@'localhost';
 
 GRANT INSERT ON db_tarefas_academicas.professor TO 'saTarefas'@'localhost';
 GRANT INSERT ON db_tarefas_academicas.curso TO 'saTarefas'@'localhost';
@@ -153,6 +162,7 @@ GRANT INSERT ON db_tarefas_academicas.grade TO 'saTarefas'@'localhost';
 GRANT INSERT ON db_tarefas_academicas.aluno TO 'saTarefas'@'localhost';
 GRANT INSERT ON db_tarefas_academicas.prova TO 'saTarefas'@'localhost';
 GRANT INSERT ON db_tarefas_academicas.disciplina TO 'saTarefas'@'localhost';
+GRANT INSERT ON db_tarefas_academicas.evento TO 'saTarefas'@'localhost';
 
 GRANT UPDATE ON db_tarefas_academicas.professor TO 'saTarefas'@'localhost';
 GRANT UPDATE ON db_tarefas_academicas.curso TO 'saTarefas'@'localhost';
@@ -161,6 +171,7 @@ GRANT UPDATE ON db_tarefas_academicas.grade TO 'saTarefas'@'localhost';
 GRANT UPDATE ON db_tarefas_academicas.aluno TO 'saTarefas'@'localhost';
 GRANT UPDATE ON db_tarefas_academicas.prova TO 'saTarefas'@'localhost';
 GRANT UPDATE ON db_tarefas_academicas.disciplina TO 'saTarefas'@'localhost';
+GRANT UPDATE ON db_tarefas_academicas.evento TO 'saTarefas'@'localhost';
 
 GRANT DELETE ON db_tarefas_academicas.professor TO 'saTarefas'@'localhost';
 GRANT DELETE ON db_tarefas_academicas.curso TO 'saTarefas'@'localhost';
@@ -169,6 +180,7 @@ GRANT DELETE ON db_tarefas_academicas.grade TO 'saTarefas'@'localhost';
 GRANT DELETE ON db_tarefas_academicas.aluno TO 'saTarefas'@'localhost';
 GRANT DELETE ON db_tarefas_academicas.prova TO 'saTarefas'@'localhost';
 GRANT DELETE ON db_tarefas_academicas.disciplina TO 'saTarefas'@'localhost';
+GRANT DELETE ON db_tarefas_academicas.evento TO 'saTarefas'@'localhost';
 
 ALTER USER 'saTarefas'@'localhost' IDENTIFIED WITH mysql_native_password BY '_8280';
 FLUSH PRIVILEGES;

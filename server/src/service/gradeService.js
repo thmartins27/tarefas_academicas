@@ -15,7 +15,7 @@ module.exports = {
         inner join turma on grade.fk_turma = turma.id_turma
         inner join professor on grade.fk_professor = professor.cod_professor
         inner join disciplina on grade.fk_disciplina = disciplina.cod_disciplina
-        where grade.fk_turma = ?;`, [idTurma], (erro, results) => {
+        where grade.fk_turma = ? order by grade.fk_dia asc;`, [idTurma], (erro, results) => {
             if(erro) reject(erro)
             resolve(results)
         })
@@ -29,23 +29,23 @@ module.exports = {
         })
     }),
 
-    alterDisciplina: (paramTurma, paramDia, dia, professor, disciplina) => new Promise((resolve, reject) => {
-        db.query(`update grade set fk_professor = ?, fk_discplina = ?, fk_dia = ?
-        where fk_turma = ? and fk_dia = ?;`, [professor, disciplina, dia, paramTurma, paramDia], (erro, result) => {
+    alterGrade: (paramTurma, paramDia, professor, disciplina, dia) => new Promise((resolve, reject) => {
+        db.query(`update grade set fk_professor = ?, fk_disciplina = ?, fk_dia = ?
+        where fk_dia = ? and fk_turma = ?;`, [professor, disciplina, dia, paramDia, paramTurma], (erro, result) => {
             if(erro) reject(erro)
             resolve(result)
         })
     }),
 
     deleteDia: (idTurma, dia) => new Promise((resolve, reject) => {
-        db.query(`delete from grade where turma = ? and dia_disciplina = ?`, [idTurma, dia], (erro, results) => {
+        db.query(`delete from grade where fk_turma = ? and fk_dia = ?`, [idTurma, dia], (erro, results) => {
             if(erro) reject(erro)
             resolve(results)
         })
     }),
 
     delete: idTurma => new Promise((resolve, reject) => {
-        db.query(`delete from grade where turma = ?`, [idTurma], (erro, result) => {
+        db.query(`delete from grade where fk_turma = ?`, [idTurma], (erro, result) => {
             if(erro) reject(erro)
             resolve(result)
         })

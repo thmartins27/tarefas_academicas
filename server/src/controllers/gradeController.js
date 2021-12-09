@@ -35,76 +35,83 @@ module.exports = {
         try{
             let grades = await gradeService.buscarTodos()
             for(i in grades){
-                if(grades[i].fk_dia == dia && grades[i].fk_turma == turma){
-                    throw 'Já existe uma disciplina para está turma, no dia especifico'
-                }
+                if(grades[i].fk_turma == turma && grades[i].fk_dia == dia)
+                    throw 'já existe uma discplina cadastrada nesse dia'
             }
-            
             try{
-                if(dia == '' || turma == '' || professor == '' || disciplina == ''){throw 'Campos em branco'
-                }else{
-                    let grade = await gradeService.addGrade(dia, turma, professor, disciplina)
-                    if(grade.affectedRows == 1) json.result = 'Dados cadastrados com sucesso'
-                    else throw 'Erro ao cadastrar dados'
-                }
+                let grade = await gradeService.addGrade(dia, turma, professor, disciplina)
+                if(grade.affectedRows == 0)
+                    throw 'Erro ao adicionar os dados'
+                json.result = 'Dados cadastrados com sucesso'
             }catch(e){
                 json.erro = e
-                console.log(e)
+                console.log(json.erro)
+            }
+        }catch(e){
+            json.erro = e
+            console.log(json.erro)
+        }
+        
+        res.json(json)
+    },
+
+    alterGrade: async(req, res) => {
+        let json = {erro: '', result: {}}
+        let paramTurma = req.params.turma
+        let paramDia = req.params.dia
+        let dia = parseInt(req.body.dia)
+        let professor = req.body.professor
+        let disciplina = req.body.disciplina
+
+        try{
+            if(dia == '') dia = paramDia
+            let grades = await gradeService.buscarTodos()
+            for(i in grades){
+                if(grades[i].fk_turma == paramTurma && dia != paramDia && grades[i].fk_dia == dia)
+                    throw 'Já existe uma disciplina cadastrada nesse dia'
+            }
+
+            try{
+                let grade = await gradeService.alterGrade(paramTurma, paramDia, professor, disciplina, dia)
+                if(grade.affectedRows == 0)
+                    throw 'Dados não alterados'
+                json.result = 'Dados alterados'
+            }catch(e){
+                json.erro = e
+                console.log(json.erro)
             }
 
         }catch(e){
             json.erro = e
-            console.log(e)
-        }
-        res.json(json)
-    },
-
-    alterDisciplina: async(req, res) => {
-        let json = {erro: '', result: {}}
-        let paramTurma = req.params.turma
-        let paramdia = req.params.dia
-        let dia = req.body.dia
-        let professor = req.body.professor
-        let disciplina = req.body.disciplina
-        try{
-            if(!dia || !professor || !disciplina)
-                throw 'Campos em branco'
-            let grade = await gradeService.alterDisciplina(paramTurma, paramdia, dia, professor, disciplina)
-            if(grade.affectedRows == 0)
-                throw 'Erro ao alterar dados'
-            json.result = 'Campos alterados com sucesso'
-        }catch(e){
-            json.erro = `Erro na query: ${e}`
             console.log(json.erro)
         }
+
         res.json(json)
     },
 
     delete: async(req, res) => {
-        let json = {erro: '', results: {}}
-        let idTurma = req.params.idTurma
+        let json = {erro: '', result:{}}
+        let turma = req.params.turma
         let dia = req.params.dia
+        let grade
 
-        if(idTurma && dia){
-            try{
-                let grade = await gradeService.deleteDia(idTurma, dia)
-                json.results = grade
-            }catch(e){
-                json.erro = `Erro de query ${e}`
-                console.log(json.erro)
+        try{
+            if(!dia){
+                grade = await gradeService.delete(turma)
+                if(grade.affectedRows == 0)
+                    throw 'Erro ao deletar dados'
+                json.result = `Grade da turma ${turma} deletada`
+            }else{
+                grade = await gradeService.deleteDia(turma, dia)
+                if(grade.affectedRows == 0)
+                    throw 'Erro ao deletar dados'
+                json.result = `Disciplina deletada da grade`
             }
-        }else if(idTurma){
-            try{
-                let grade = await gradeService.delete(idTurma)
-                json.results = grade
-            }catch(e){
-                json.erro = `Erro de query ${e}`
-                console.log(json.erro)
-            }
-        }else{
-            json.erro = 'Campos não enviados'
+        }catch(e){
+            json.erro = e
+            console.log(json.erro)
         }
-
+        
         res.json(json)
     }
 }

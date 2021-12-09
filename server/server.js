@@ -15,7 +15,7 @@ const router = require('./router')
     server.use(bodyParser.json())
 
 
-server.use('/api', router)
+server.use('/sa', router)
 
 
 server.listen(port, () => {
