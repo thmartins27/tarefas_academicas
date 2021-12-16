@@ -53,8 +53,10 @@ router.put('/prova/:turma', provaController.alterProva)
 
 //eventos
 router.get('/eventos/:turma?', eventoController.buscar)
+router.post('/evento', eventoController.addEvento)
 
 router.get('/teste', (req, res) => {
     res.send(req.query.dia + '/' + req.query.mes)
 })
+
 module.exports = router

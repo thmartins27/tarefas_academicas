@@ -45,7 +45,7 @@ module.exports = {
     },
 
     addProfessor: async(req, res) => {
-        let json = {erro: '', results: {}}
+        let json = {erro: '', results: ''}
         let codigo = req.body.codigo
         let nome = req.body.nome
         let sobrenome = req.body.sobrenome
@@ -96,11 +96,9 @@ module.exports = {
         let codigo = req.params.codigo
         try{
             let professor = await professorService.delete(codigo)
-            if(professor){
-                json.results = professor
-            }else{
-                json.erro = 'Campos não enviados'
-            }
+            if(professor.affectedRows == 0)
+                throw 'Erro ao deletar dados'
+            json.results = 'Dados deletados'
         }catch(e){
             json.erro = `Erro de query: ${e}`
             console.log(json.erro)

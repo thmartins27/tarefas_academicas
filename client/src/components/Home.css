@@ -1,0 +1,32 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.content-nav{
+    background-color: #444;
+    border-radius: 5px;
+    width: 40rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-link{
+    color: #fff
+}
+
+.title-page{
+    color: #872aa7
+}
+
+
+.title-link:hover{
+    color: #00f;
+    cursor: pointer;
+}
+
+@media screen and (width: 720px){
+    .content-nav{
+        width: 100%;
+    }
+}

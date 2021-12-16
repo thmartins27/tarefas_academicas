@@ -2,7 +2,7 @@ const db = require('../db')
 
 module.exports = {
     buscarTodos: () => new Promise((resolve, reject) => {
-        db.query('select * from professor', (erro, results) => {
+        db.query('select * from professor order by cod_professor asc', (erro, results) => {
             if(erro) {reject(erro); return}
             resolve(results)
         })
